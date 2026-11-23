@@ -7,7 +7,9 @@ import {
   Outlet,
   type RouteObject,
   RouterProvider,
+  useLocation,
 } from "react-router-dom";
+import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 import { Login } from "./pages/Login";
 import { Signup } from "./pages/Signup";
 import { ForgotPassword } from "./pages/ForgotPassword";
@@ -148,6 +150,7 @@ export function App() {
 }
 
 function AppLayout() {
+  const location = useLocation();
   const handleSkipToContent = (event: MouseEvent<HTMLAnchorElement>) => {
     const main = document.getElementById("main-content");
     if (!main) return;
@@ -172,7 +175,9 @@ function AppLayout() {
         </nav>
       </header>
       <main id="main-content" tabIndex={-1}>
-        <Outlet />
+        <ErrorBoundary resetKey={location.key}>
+          <Outlet />
+        </ErrorBoundary>
       </main>
       <SiteFooter />
     </>
